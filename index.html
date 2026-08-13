@@ -202,7 +202,8 @@
 </div>
 
 <script>
-  const API_URL = "https://script.google.com/macros/s/AKfycbyPPLCBiIByU426Qf_XCuTCfLAEXhKA3HTL-Sl31jQYbgNmCF75DObMR0dT6kCB5xz2/exec";
+  // Ensure this exact URL ends in '/exec'
+  const API_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL"; 
   let activeComplaintId = null;
 
   document.getElementById('complaintForm').addEventListener('submit', function(e) {
@@ -226,8 +227,11 @@
         mimeType: mimeType
       };
 
+      // Sending payload as text/plain avoids CORS preflight OPTIONS blocking on browsers
       fetch(API_URL, {
         method: 'POST',
+        mode: 'cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)
       })
       .then(res => res.json())
@@ -240,9 +244,14 @@
           statusBox.style.display = 'block';
 
           document.getElementById('complaintForm').reset();
+        } else {
+          alert("Script Error: " + (res.message || "Unknown error"));
         }
       })
-      .catch(() => alert("Submission failed. Check API URL."))
+      .catch((error) => {
+        console.error("Fetch Error:", error);
+        alert("Submission failed. Check Console (F12) for network/CORS error.");
+      })
       .finally(() => {
         btn.disabled = false;
         btn.innerText = 'Submit Complaint';

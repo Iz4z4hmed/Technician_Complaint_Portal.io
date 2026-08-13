@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maintenance Management Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    :root {
+      --title-brown: #3d2a1d;
+      --btn-brown: #5d3d1e;
+      --bg-color: #f7f7f8;
+      --card-bg: #ffffff;
+      --input-bg: #eef0f2;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      margin: 0;
+      padding: 20px 10px;
+    }
+
+    .header-area {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .brand-logo-img {
+      max-width: 180px;
+      height: auto;
+      margin-bottom: 10px;
+      object-fit: contain;
+    }
+
+    .portal-title {
+      font-size: 22px;
+      color: var(--title-brown);
+      margin: 0;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Responsively stacking filter controls */
+    .toolbar {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background-color: var(--input-bg);
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    @media(min-width: 768px) {
+      .toolbar {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .date-input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-grow: 1;
+    }
+
+    input[type="date"] {
+      width: 100%;
+      min-width: 120px;
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #ffffff;
+      font-size: 13px;
+    }
+
+    .btn-brown {
+      background-color: var(--btn-brown);
+      color: #ffffff;
+      border: none;
+      padding: 9px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .btn-action-sm {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+
+    /* Standard Desktop Table */
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      padding: 10px 8px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+    }
+
+    th {
+      color: var(--title-brown);
+      font-weight: 700;
+      background: #fafafa;
+    }
+
+    .badge {
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 11px;
+    }
+
+    .badge-Pending { background: #fef3c7; color: #92400e; }
+    .badge-Resolved { background: #dcfce7; color: #15803d; }
+
+    .photo-link {
+      color: var(--btn-brown);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    /* Mobile Responsive Card-Based Layout */
+    @media (max-width: 767px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      thead { display: none; }
+
+      tr {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        padding: 12px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+      }
+
+      td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #f1f5f9;
+        padding: 8px 0;
+      }
+
+      td:last-child { border-bottom: none; }
+
+      td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: var(--title-brown);
+        font-size: 12px;
+        margin-right: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header-area">
+  <!-- REPLACE 'logo.png' WITH YOUR IMAGE URL OR FILE PATH -->
+  <img src="logo.png" alt="Company Logo" class="brand-logo-img">
+  <h1 class="portal-title">Maintenance Team Portal</h1>
+</div>
+
+<div class="container">
+  <div class="toolbar">
+    <div class="filter-group">
+      <span style="font-size:13px; font-weight:600;">Filter:</span>
+      <div class="date-input-wrapper">
+        <input type="date" id="startDate" onchange="loadComplaints()">
+        <span>to</span>
+        <input type="date" id="endDate" onchange="loadComplaints()">
+      </div>
+      <button class="btn-brown btn-action-sm" onclick="resetFilter()">Reset</button>
+    </div>
+    <button class="btn-brown" onclick="exportExcel()">Export Excel Report</button>
+  </div>
+
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Date</th>
+          <th>Tech ID</th>
+          <th>Location</th>
+          <th>Category</th>
+          <th>Description</th>
+          <th>Photo</th>
+          <th>Schedule Date</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  const API_URL = "https://script.google.com/macros/s/AKfycbzB3KJ1bP8EtJ1dyNAqUhKjTsYuC1WcaSknimpvLYSsob01DVyvL73bjxs-5kmS2gxw/exec";
+  let dataset = [];
+
+  async function loadComplaints() {
+    try {
+      const res = await fetch(API_URL);
+      let complaints = await res.json();
+
+      const start = document.getElementById('startDate').value;
+      const end = document.getElementById('endDate').value;
+
+      if (start) complaints = complaints.filter(c => c.date >= start);
+      if (end) complaints = complaints.filter(c => c.date <= end);
+
+      dataset = complaints;
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+
+      if (complaints.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;">No records found.</td></tr>';
+        return;
+      }
+
+      complaints.forEach(c => {
+        const isDone = c.status === 'Resolved';
+        const photo = c.photoUrl && c.photoUrl.startsWith('http') 
+          ? `<a href="${c.photoUrl}" target="_blank" class="photo-link">View Photo</a>` 
+          : 'None';
+
+        tbody.innerHTML += `
+          <tr>
+            <td data-label="ID"><b>${c.id}</b></td>
+            <td data-label="Date">${c.date}</td>
+            <td data-label="Tech ID">${c.techId}</td>
+            <td data-label="Location">${c.floor} - ${c.room}</td>
+            <td data-label="Category">${c.category}</td>
+            <td data-label="Description">${c.description}</td>
+            <td data-label="Photo">${photo}</td>
+            <td data-label="Schedule Date">
+              <div style="display:flex; gap:4px; align-items:center;">
+                <input type="date" value="${c.scheduleDate}" id="sched-${c.id}" ${isDone ? 'disabled' : ''} style="padding:4px;">
+                ${!isDone ? `<button class="btn-brown btn-action-sm" onclick="saveSchedule('${c.id}')">Save</button>` : ''}
+              </div>
+            </td>
+            <td data-label="Status"><span class="badge badge-${c.status}">${c.status}</span></td>
+            <td data-label="Action">
+              ${isDone ? '<strong style="color:green;">Done</strong>' : `<button class="btn-brown btn-action-sm" onclick="markDone('${c.id}')">Done</button>`}
+            </td>
+          </tr>
+        `;
+      });
+    } catch (e) { console.error(e); }
+  }
+
+  async function saveSchedule(id) {
+    const val = document.getElementById(`sched-${id}`).value;
+    if (!val) return alert('Select date first');
+    await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: "schedule", id: id, scheduleDate: val }) });
+    loadComplaints();
+  }
+
+  async function markDone(id) {
+    await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: "markDone", id: id }) });
+    loadComplaints();
+  }
+
+  function resetFilter() {
+    document.getElementById('startDate').value = '';
+    document.getElementById('endDate').value = '';
+    loadComplaints();
+  }
+
+  function exportExcel() {
+    if (!dataset.length) return alert('No data');
+    const ws = XLSX.utils.json_to_sheet(dataset);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Complaints");
+    XLSX.writeFile(wb, `Maintenance_Export.xlsx`);
+  }
+
+  loadComplaints();
+  setInterval(loadComplaints, 5000);
+</script>
+
+</body>
+</html>

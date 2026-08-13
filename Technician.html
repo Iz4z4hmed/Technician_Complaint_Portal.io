@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technician Maintenance Portal</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    :root {
+      --title-brown: #3d2a1d;
+      --btn-brown: #5d3d1e;
+      --btn-hover: #452c13;
+      --bg-color: #f7f7f8;
+      --card-bg: #ffffff;
+      --input-bg: #eef0f2;
+      --text-muted: #666666;
+      --label-color: #333333;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      margin: 0;
+      padding: 20px 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .portal-wrapper {
+      width: 100%;
+      max-width: 480px;
+      text-align: center;
+    }
+
+    /* Logo Image Styling */
+    .brand-logo-img {
+      max-width: 180px;
+      height: auto;
+      margin-bottom: 15px;
+      object-fit: contain;
+    }
+
+    .portal-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--title-brown);
+      margin: 0 0 8px 0;
+    }
+
+    .portal-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 25px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 25px 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+      text-align: left;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .field-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      color: var(--label-color);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 14px 16px;
+      background-color: var(--input-bg);
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-family: inherit;
+      color: #111111;
+      outline: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      background-color: #e2e5e8;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background-color: var(--btn-brown);
+      color: #ffffff;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 15px;
+      box-shadow: 0 6px 14px rgba(93, 61, 30, 0.2);
+    }
+
+    .btn-submit:hover { background-color: var(--btn-hover); }
+
+    .status-alert {
+      margin-top: 20px;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      display: none;
+      line-height: 1.4;
+    }
+
+    .status-pending { background-color: #fffbeb; color: #b45309; border: 1px solid #fcd34d; }
+    .status-scheduled { background-color: #eff6ff; color: #1d4ed8; border: 1px solid #93c5fd; }
+    .status-resolved { background-color: #f0fdf4; color: #15803d; border: 1px solid #86efac; }
+  </style>
+</head>
+<body>
+
+<div class="portal-wrapper">
+  <!-- REPLACE 'logo.png' WITH YOUR IMAGE URL OR FILE PATH -->
+  <img src="logo.png" alt="Company Logo" class="brand-logo-img">
+  
+  <h1 class="portal-title">Technician Complaint Portal</h1>
+  <p class="portal-subtitle">Submit room maintenance, AC, or plumbing issues directly to the Maintenance team.</p>
+
+  <div class="card">
+    <form id="complaintForm">
+      
+      <div class="form-group">
+        <label class="field-label">👤 Technician ID</label>
+        <input type="text" id="techId" placeholder="e.g. C62921" required>
+      </div>
+
+      <div class="form-group">
+        <label class="field-label">🏢 Floor Number</label>
+        <select id="floorNumber" required>
+          <option value="" disabled selected>Select Floor</option>
+          <option value="Floor 1">Floor 1</option>
+          <option value="Floor 2">Floor 2</option>
+          <option value="Floor 3">Floor 3</option>
+          <option value="Floor 4">Floor 4</option>
+          <option value="Floor 5">Floor 5</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="field-label">🚪 Room Number / Area</label>
+        <input type="text" id="roomNumber" placeholder="e.g. 102 or Restroom" required>
+      </div>
+
+      <div class="form-group">
+        <label class="field-label">🛠️ Category</label>
+        <select id="category" required>
+          <option value="" disabled selected>Select Category</option>
+          <option value="AC Problem">AC Problem</option>
+          <option value="Water Supply">Water Supply</option>
+          <option value="Tap / Plumbing">Tap / Plumbing</option>
+          <option value="Toilet Issue">Toilet Issue</option>
+          <option value="Electrical">Electrical</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="field-label">📷 Upload Photo</label>
+        <input type="file" id="photo" accept="image/*" style="padding: 10px;">
+      </div>
+
+      <div class="form-group">
+        <label class="field-label">📝 Complaint Description</label>
+        <textarea id="description" placeholder="Describe the issue in detail..." required></textarea>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">Submit Complaint</button>
+
+    </form>
+
+    <div id="statusBox" class="status-alert"></div>
+  </div>
+</div>
+
+<script>
+  const API_URL = "https://script.google.com/macros/s/AKfycbzB3KJ1bP8EtJ1dyNAqUhKjTsYuC1WcaSknimpvLYSsob01DVyvL73bjxs-5kmS2gxw/exec";
+  let activeComplaintId = null;
+
+  document.getElementById('complaintForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.innerText = "Submitting...";
+
+    const file = document.getElementById('photo').files[0];
+
+    const sendData = (fileData = null, fileName = null, mimeType = null) => {
+      const payload = {
+        action: "submit",
+        techId: document.getElementById('techId').value,
+        floor: document.getElementById('floorNumber').value,
+        room: document.getElementById('roomNumber').value,
+        category: document.getElementById('category').value,
+        description: document.getElementById('description').value,
+        fileData: fileData,
+        fileName: fileName,
+        mimeType: mimeType
+      };
+
+      fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(res => {
+        if (res.status === 'success') {
+          activeComplaintId = res.id;
+          const statusBox = document.getElementById('statusBox');
+          statusBox.className = 'status-alert status-pending';
+          statusBox.innerHTML = `Complaint <strong>${activeComplaintId}</strong> submitted.<br>Waiting for review.`;
+          statusBox.style.display = 'block';
+
+          document.getElementById('complaintForm').reset();
+        }
+      })
+      .catch(() => alert("Submission failed. Check API URL."))
+      .finally(() => {
+        btn.disabled = false;
+        btn.innerText = 'Submit Complaint';
+      });
+    };
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (evt) => sendData(evt.target.result, file.name, file.type);
+      reader.readAsDataURL(file);
+    } else {
+      sendData();
+    }
+  });
+
+  setInterval(async () => {
+    if (!activeComplaintId) return;
+
+    try {
+      const response = await fetch(API_URL);
+      const complaints = await response.json();
+      const item = complaints.find(c => c.id === activeComplaintId);
+
+      if (item) {
+        const statusBox = document.getElementById('statusBox');
+        if (item.status === 'Resolved') {
+          statusBox.className = 'status-alert status-resolved';
+          statusBox.innerHTML = `Complaint (<strong>${activeComplaintId}</strong>) has been SOLVED!`;
+        } else if (item.scheduleDate) {
+          statusBox.className = 'status-alert status-scheduled';
+          statusBox.innerHTML = `SCHEDULED ALERT: Complaint (<strong>${activeComplaintId}</strong>) is scheduled for <strong>${item.scheduleDate}</strong>.`;
+        }
+      }
+    } catch (e) { console.error(e); }
+  }, 4000);
+</script>
+
+</body>
+</html>

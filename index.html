@@ -159,7 +159,7 @@
   <form id="complaintForm">
     <div class="form-group">
       <label for="techId">👤 Technician ID / Name</label>
-      <input type="text" id="techId" placeholder="Enter your ID or Name" required>
+      <input type="text" id="techId" placeholder="Enter your ID or Name" >
     </div>
 
     <div class="form-group">
@@ -187,9 +187,9 @@
         <option value="">Select Category</option>
         <option value="Electrical">Electrical</option>
         <option value="Plumbing">Plumbing</option>
-        <option value="HVAC / AC">HVAC / AC</option>
-        <option value="Carpentry">Carpentry</option>
-        <option value="Civil Work">Civil Work</option>
+        <option value="AC Problem">HVAC / AC</option>
+        <option value="Toilet Issue">Carpentry</option>
+        <option value="Water Leakage">Civil Work</option>
         <option value="Other">Other</option>
       </select>
     </div>
@@ -273,7 +273,7 @@
           activeComplaintId = res.id;
           const statusBox = document.getElementById('statusBox');
           statusBox.className = 'status-alert status-pending';
-          statusBox.innerHTML = `Complaint <strong>${activeComplaintId}</strong> submitted successfully.<br>Status: <strong>Pending Review</strong>`;
+          statusBox.innerHTML = `Your Complaint <strong>${activeComplaintId}</strong> submitted successfully.<br>Status: <strong>Maintenance Team Will Respond Soon</strong>`;
           statusBox.style.display = 'block';
 
           document.getElementById('complaintForm').reset();

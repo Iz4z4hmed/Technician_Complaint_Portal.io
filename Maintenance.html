@@ -11,9 +11,12 @@
     :root {
       --title-brown: #3d2a1d;
       --btn-brown: #5d3d1e;
+      --btn-hover: #452c13;
+      --btn-red: #991b1b;
       --bg-color: #f7f7f8;
       --card-bg: #ffffff;
       --input-bg: #eef0f2;
+      --border-color: #e5e7eb;
     }
 
     * { box-sizing: border-box; }
@@ -22,74 +25,93 @@
       font-family: 'Inter', sans-serif;
       background-color: var(--bg-color);
       margin: 0;
-      padding: 20px 10px;
+      padding: 12px 8px;
     }
 
     .header-area {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .brand-logo-img {
-      max-width: 180px;
+      max-width: 140px;
       height: auto;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
       object-fit: contain;
     }
 
     .portal-title {
-      font-size: 22px;
+      font-size: 20px;
       color: var(--title-brown);
       margin: 0;
+      font-weight: 700;
     }
 
     .container {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
       background: var(--card-bg);
-      border-radius: 16px;
-      padding: 15px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      border-radius: 12px;
+      padding: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     }
 
-    /* Responsively stacking filter controls */
+    /* Tabs Styling - Horizontal Scroll for Mobile */
+    .tabs-nav {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 8px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      white-space: nowrap;
+    }
+
+    .tab-btn {
+      background: #eef0f2;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      color: var(--title-brown);
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .tab-btn.active {
+      background-color: var(--btn-brown);
+      color: #ffffff;
+    }
+
     .toolbar {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
       background-color: var(--input-bg);
-      padding: 15px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-    }
-
-    @media(min-width: 768px) {
-      .toolbar {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-      }
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 16px;
     }
 
     .filter-group {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 8px;
-      width: 100%;
-    }
-
-    .date-input-wrapper {
-      display: flex;
-      align-items: center;
       gap: 6px;
-      flex-grow: 1;
+      width: 100%;
     }
 
-    input[type="date"] {
-      width: 100%;
+    .filter-group input[type="date"] {
+      flex: 1;
       min-width: 120px;
-      padding: 8px 10px;
+    }
+
+    input[type="date"], input[type="text"], input[type="file"] {
+      width: 100%;
+      padding: 10px;
       border: 1px solid #ccc;
       border-radius: 8px;
       background: #ffffff;
@@ -100,51 +122,44 @@
       background-color: var(--btn-brown);
       color: #ffffff;
       border: none;
-      padding: 9px 14px;
+      padding: 10px 14px;
       border-radius: 8px;
       font-weight: 600;
       cursor: pointer;
       font-size: 13px;
-      white-space: nowrap;
-    }
-
-    .btn-action-sm {
-      padding: 6px 10px;
-      font-size: 12px;
-    }
-
-    /* Standard Desktop Table */
-    .table-responsive {
-      overflow-x: auto;
-    }
-
-    table {
       width: 100%;
-      border-collapse: collapse;
+      text-align: center;
+      transition: background 0.2s;
+    }
+
+    .btn-brown:hover { background-color: var(--btn-hover); }
+
+    .btn-red {
+      background-color: var(--btn-red);
+      color: #ffffff;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
       font-size: 13px;
-    }
-
-    th, td {
-      padding: 10px 8px;
-      border-bottom: 1px solid #e5e7eb;
-      text-align: left;
-    }
-
-    th {
-      color: var(--title-brown);
-      font-weight: 700;
-      background: #fafafa;
+      width: 100%;
+      text-align: center;
     }
 
     .badge {
+      display: inline-block;
       padding: 4px 8px;
       border-radius: 6px;
       font-weight: 600;
       font-size: 11px;
+      text-transform: uppercase;
     }
 
     .badge-Pending { background: #fef3c7; color: #92400e; }
+    .badge-Rescheduled { background: #eff6ff; color: #1d4ed8; }
     .badge-Resolved { background: #dcfce7; color: #15803d; }
+    .badge-Rejected { background: #fee2e2; color: #991b1b; }
 
     .photo-link {
       color: var(--btn-brown);
@@ -152,39 +167,95 @@
       text-decoration: underline;
     }
 
-    /* Mobile Responsive Card-Based Layout */
-    @media (max-width: 767px) {
+    /* Desktop Table View */
+    @media (min-width: 769px) {
+      body { padding: 20px 10px; }
+      .container { padding: 20px; }
+      .brand-logo-img { max-width: 180px; }
+      .portal-title { font-size: 22px; }
+
+      .toolbar {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .btn-brown, .btn-red { width: auto; }
+
+      .table-responsive {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+
+      th, td {
+        padding: 12px 10px;
+        border-bottom: 1px solid var(--border-color);
+        text-align: left;
+        vertical-align: middle;
+      }
+
+      th {
+        color: var(--title-brown);
+        font-weight: 700;
+        background: #fafafa;
+      }
+    }
+
+    /* Mobile Responsive Cards Layout */
+    @media (max-width: 768px) {
       table, thead, tbody, th, td, tr {
         display: block;
       }
 
-      thead { display: none; }
+      thead {
+        display: none;
+      }
 
       tr {
         background: #ffffff;
-        border: 1px solid #e2e8f0;
+        border: 1px solid var(--border-color);
         border-radius: 12px;
         margin-bottom: 12px;
         padding: 12px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.03);
       }
 
       td {
+        border: none;
+        padding: 6px 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid #f1f5f9;
-        padding: 8px 0;
+        font-size: 13px;
+        text-align: right;
       }
-
-      td:last-child { border-bottom: none; }
 
       td::before {
         content: attr(data-label);
         font-weight: 700;
         color: var(--title-brown);
-        font-size: 12px;
-        margin-right: 10px;
+        text-align: left;
+        padding-right: 10px;
+        min-width: 110px;
+      }
+
+      /* Stack action fields vertically on mobile cards */
+      td[data-label="Actions"], td[data-label="Schedule / Reason"] {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        margin-top: 6px;
+        padding-top: 8px;
+        border-top: 1px dashed var(--border-color);
+      }
+
+      td[data-label="Actions"]::before, td[data-label="Schedule / Reason"]::before {
+        margin-bottom: 4px;
       }
     }
   </style>
@@ -192,21 +263,25 @@
 <body>
 
 <div class="header-area">
-  <!-- REPLACE 'logo.png' WITH YOUR IMAGE URL OR FILE PATH -->
   <img src="logo.png" alt="Company Logo" class="brand-logo-img">
   <h1 class="portal-title">Maintenance Team Portal</h1>
 </div>
 
 <div class="container">
+  <!-- Tabs Header -->
+  <div class="tabs-nav">
+    <button class="tab-btn active" onclick="switchTab('Pending', event)">Active Complaints</button>
+    <button class="tab-btn" onclick="switchTab('Rescheduled', event)">Rescheduled</button>
+    <button class="tab-btn" onclick="switchTab('Resolved', event)">Resolved</button>
+    <button class="tab-btn" onclick="switchTab('Rejected', event)">Rejected</button>
+  </div>
+
   <div class="toolbar">
     <div class="filter-group">
-      <span style="font-size:13px; font-weight:600;">Filter:</span>
-      <div class="date-input-wrapper">
-        <input type="date" id="startDate" onchange="loadComplaints()">
-        <span>to</span>
-        <input type="date" id="endDate" onchange="loadComplaints()">
-      </div>
-      <button class="btn-brown btn-action-sm" onclick="resetFilter()">Reset</button>
+      <input type="date" id="startDate" onchange="loadComplaints()">
+      <span style="font-size:12px; font-weight:600;">to</span>
+      <input type="date" id="endDate" onchange="loadComplaints()">
+      <button class="btn-brown" onclick="resetFilter()" style="margin-top:4px;">Reset Filter</button>
     </div>
     <button class="btn-brown" onclick="exportExcel()">Export Excel Report</button>
   </div>
@@ -221,10 +296,10 @@
           <th>Location</th>
           <th>Category</th>
           <th>Description</th>
-          <th>Photo</th>
-          <th>Schedule Date</th>
+          <th>Initial Photo</th>
+          <th id="thDynamicMeta">Schedule / Reason</th>
           <th>Status</th>
-          <th>Action</th>
+          <th id="thDynamicAction">Actions</th>
         </tr>
       </thead>
       <tbody id="tableBody"></tbody>
@@ -232,90 +307,237 @@
   </div>
 </div>
 
-<script>
-  const API_URL = "https://script.google.com/macros/s/AKfycbyPPLCBiIByU426Qf_XCuTCfLAEXhKA3HTL-Sl31jQYbgNmCF75DObMR0dT6kCB5xz2/exec";
+  <script>
+  const API_URL = "https://script.google.com/macros/s/AKfycbwoTBPZFvUSGqS6VYmITjew4P2bkVxPdIJUD0e4Lt5FYslV9JUycSpLvMaM95W3MuF9/exec";
   let dataset = [];
+  let currentTab = 'Pending';
+  let isUserInteracting = false; // Prevents auto-refresh from clearing file selection
+
+  function switchTab(tabName, evt) {
+    currentTab = tabName;
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    evt.target.classList.add('active');
+    renderTable();
+  }
 
   async function loadComplaints() {
+    // Skip re-rendering if user is selecting a photo or typing
+    if (isUserInteracting) return;
+
     try {
       const res = await fetch(API_URL);
-      let complaints = await res.json();
+      dataset = await res.json();
+      renderTable();
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
-      const start = document.getElementById('startDate').value;
-      const end = document.getElementById('endDate').value;
+  function renderTable() {
+    if (isUserInteracting) return; // Guard against overwriting selected files
 
-      if (start) complaints = complaints.filter(c => c.date >= start);
-      if (end) complaints = complaints.filter(c => c.date <= end);
+    const tbody = document.getElementById('tableBody');
+    const thMeta = document.getElementById('thDynamicMeta');
+    const thAction = document.getElementById('thDynamicAction');
+    tbody.innerHTML = '';
 
-      dataset = complaints;
-      const tbody = document.getElementById('tableBody');
-      tbody.innerHTML = '';
+    const start = document.getElementById('startDate').value;
+    const end = document.getElementById('endDate').value;
 
-      if (complaints.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;">No records found.</td></tr>';
-        return;
+    let filtered = dataset.filter(c => {
+      let status = c.status || 'Pending';
+      if (currentTab === 'Pending') return status === 'Pending';
+      if (currentTab === 'Rescheduled') return status === 'Rescheduled';
+      if (currentTab === 'Resolved') return status === 'Resolved';
+      if (currentTab === 'Rejected') return status === 'Rejected';
+      return false;
+    });
+
+    if (start) filtered = filtered.filter(c => c.date.startsWith(start) || c.date >= start);
+    if (end) filtered = filtered.filter(c => c.date.startsWith(end) || c.date <= end);
+
+    if (thMeta && thAction) {
+      if (currentTab === 'Pending') {
+        thMeta.innerText = "Schedule / Reason";
+        thAction.innerText = "Actions";
+      } else if (currentTab === 'Rescheduled') {
+        thMeta.innerText = "Rescheduled Info";
+        thAction.innerText = "Status";
+      } else if (currentTab === 'Resolved') {
+        thMeta.innerText = "Resolution Photo";
+        thAction.innerText = "Status";
+      } else {
+        thMeta.innerText = "Details";
+        thAction.innerText = "Status";
+      }
+    }
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:20px; color:#666;">No records in ${currentTab}.</td></tr>`;
+      return;
+    }
+
+    filtered.forEach(c => {
+      const initPhoto = c.photoUrl && c.photoUrl.startsWith('http') 
+        ? `<a href="${c.photoUrl}" target="_blank" class="photo-link">View Photo</a>` : 'None';
+
+      let metaColumnHtml = '';
+      let actionColumnHtml = '';
+
+      if (currentTab === 'Pending') {
+        metaColumnHtml = `
+          <div style="display:flex; flex-direction:column; gap:6px; width:100%;">
+            <input type="date" id="sched-${c.id}" onfocus="isUserInteracting=true" onblur="isUserInteracting=false">
+            <input type="text" id="reason-${c.id}" placeholder="Reschedule reason..." onfocus="isUserInteracting=true" onblur="isUserInteracting=false">
+            <button class="btn-brown" onclick="saveSchedule('${c.id}')">Save Reschedule</button>
+          </div>
+        `;
+        actionColumnHtml = `
+          <div style="display:flex; flex-direction:column; gap:6px; width:100%;">
+            <input type="file" id="resPhoto-${c.id}" accept="image/*" onchange="isUserInteracting=true">
+            <button class="btn-brown" id="btnDone-${c.id}" onclick="markDone('${c.id}')">Mark Done (Resolve)</button>
+            <button class="btn-red" onclick="rejectComplaint('${c.id}')">Reject</button>
+          </div>
+        `;
+      } else if (currentTab === 'Rescheduled') {
+        metaColumnHtml = `
+          <div style="text-align:right;">
+            <strong>Date:</strong> ${c.scheduleDate || 'N/A'}<br>
+            <span style="font-size:11px; color:#666;">Reason: ${c.rescheduleReason || 'N/A'}</span>
+          </div>
+        `;
+        actionColumnHtml = `<span style="color:#1d4ed8; font-weight:600;">Rescheduled</span>`;
+      } else if (currentTab === 'Resolved') {
+        const resPhoto = c.resolutionPhotoUrl && c.resolutionPhotoUrl.startsWith('http')
+          ? `<a href="${c.resolutionPhotoUrl}" target="_blank" class="photo-link">View Resolution Photo</a>` : 'None';
+        metaColumnHtml = resPhoto;
+        actionColumnHtml = `<span style="color:green; font-weight:600;">Completed</span>`;
+      } else {
+        metaColumnHtml = `<span>Rejected by team</span>`;
+        actionColumnHtml = `<span style="color:red; font-weight:600;">Closed</span>`;
       }
 
-      complaints.forEach(c => {
-        const isDone = c.status === 'Resolved';
-        const photo = c.photoUrl && c.photoUrl.startsWith('http') 
-          ? `<a href="${c.photoUrl}" target="_blank" class="photo-link">View Photo</a>` 
-          : 'None';
-
-        tbody.innerHTML += `
-          <tr>
-            <td data-label="ID"><b>${c.id}</b></td>
-            <td data-label="Date">${c.date}</td>
-            <td data-label="Tech ID">${c.techId}</td>
-            <td data-label="Location">${c.floor} - ${c.room}</td>
-            <td data-label="Category">${c.category}</td>
-            <td data-label="Description">${c.description}</td>
-            <td data-label="Photo">${photo}</td>
-            <td data-label="Schedule Date">
-              <div style="display:flex; gap:4px; align-items:center;">
-                <input type="date" value="${c.scheduleDate}" id="sched-${c.id}" ${isDone ? 'disabled' : ''} style="padding:4px;">
-                ${!isDone ? `<button class="btn-brown btn-action-sm" onclick="saveSchedule('${c.id}')">Save</button>` : ''}
-              </div>
-            </td>
-            <td data-label="Status"><span class="badge badge-${c.status}">${c.status}</span></td>
-            <td data-label="Action">
-              ${isDone ? '<strong style="color:green;">Done</strong>' : `<button class="btn-brown btn-action-sm" onclick="markDone('${c.id}')">Done</button>`}
-            </td>
-          </tr>
-        `;
-      });
-    } catch (e) { console.error(e); }
+      tbody.innerHTML += `
+        <tr>
+          <td data-label="ID"><b>${c.id}</b></td>
+          <td data-label="Date">${c.date}</td>
+          <td data-label="Tech ID">${c.techId}</td>
+          <td data-label="Location">${c.floor} - ${c.room}</td>
+          <td data-label="Category">${c.category}</td>
+          <td data-label="Description">${c.description}</td>
+          <td data-label="Initial Photo">${initPhoto}</td>
+          <td data-label="Schedule / Reason">${metaColumnHtml}</td>
+          <td data-label="Status"><span class="badge badge-${c.status}">${c.status}</span></td>
+          <td data-label="Actions">${actionColumnHtml}</td>
+        </tr>
+      `;
+    });
   }
 
   async function saveSchedule(id) {
-    const val = document.getElementById(`sched-${id}`).value;
-    if (!val) return alert('Select date first');
-    await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: "schedule", id: id, scheduleDate: val }) });
+    const scheduleDate = document.getElementById(`sched-${id}`).value;
+    const reason = document.getElementById(`reason-${id}`).value;
+
+    if (!scheduleDate) return alert('Please select a reschedule date.');
+    if (!reason.trim()) return alert('Please provide a reason for rescheduling.');
+
+    isUserInteracting = true;
+    await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: "schedule", id: id, scheduleDate: scheduleDate, reason: reason })
+    });
+    isUserInteracting = false;
     loadComplaints();
   }
 
   async function markDone(id) {
-    await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: "markDone", id: id }) });
+    const fileInput = document.getElementById(`resPhoto-${id}`);
+    const btn = document.getElementById(`btnDone-${id}`);
+
+    if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+      alert('Resolution photo upload is mandatory to mark a complaint as done.');
+      return;
+    }
+
+    const file = fileInput.files[0];
+    btn.disabled = true;
+    btn.innerText = "Uploading & Resolving...";
+    isUserInteracting = true;
+
+    // Helper to compress resolution photo before upload
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      const img = new Image();
+      img.src = evt.target.result;
+      img.onload = async function() {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+        if (width > 1024) {
+          height = Math.round((height * 1024) / width);
+          width = 1024;
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+
+        const payload = {
+          action: "markDone",
+          id: id,
+          resolutionPhotoData: compressedBase64,
+          resolutionFileName: file.name,
+          resolutionMimeType: 'image/jpeg'
+        };
+
+        try {
+          await fetch(API_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+          });
+        } catch(err) {
+          console.error(err);
+          alert("Failed to submit. Check network connection.");
+        } finally {
+          isUserInteracting = false;
+          loadComplaints();
+        }
+      };
+    };
+    reader.readAsDataURL(file);
+  }
+
+  async function rejectComplaint(id) {
+    if (!confirm('Are you sure you want to reject this complaint?')) return;
+
+    isUserInteracting = true;
+    await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: "reject", id: id })
+    });
+    isUserInteracting = false;
     loadComplaints();
   }
 
   function resetFilter() {
     document.getElementById('startDate').value = '';
     document.getElementById('endDate').value = '';
+    isUserInteracting = false;
     loadComplaints();
   }
 
   function exportExcel() {
-    if (!dataset.length) return alert('No data');
+    if (!dataset.length) return alert('No data to export.');
     const ws = XLSX.utils.json_to_sheet(dataset);
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Complaints");
+    XLSX.utils.book_append_sheet(wb, ws, "Complaints_Full");
     XLSX.writeFile(wb, `Maintenance_Export.xlsx`);
   }
 
   loadComplaints();
   setInterval(loadComplaints, 5000);
 </script>
-
 </body>
 </html>

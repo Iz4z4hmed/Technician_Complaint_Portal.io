@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Technician Maintenance Portal</title>
+  <title>Technician Complaint Portal</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
@@ -14,8 +14,7 @@
       --bg-color: #f7f7f8;
       --card-bg: #ffffff;
       --input-bg: #eef0f2;
-      --text-muted: #666666;
-      --label-color: #333333;
+      --border-color: #d1d5db;
     }
 
     * { box-sizing: border-box; }
@@ -24,193 +23,229 @@
       font-family: 'Inter', sans-serif;
       background-color: var(--bg-color);
       margin: 0;
-      padding: 20px 15px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+      padding: 16px 10px;
     }
 
-    .portal-wrapper {
-      width: 100%;
-      max-width: 480px;
+    .header-area {
       text-align: center;
+      margin-bottom: 20px;
     }
 
-    /* Logo Image Styling */
     .brand-logo-img {
-      max-width: 180px;
+      max-width: 150px;
       height: auto;
-      margin-bottom: 15px;
+      margin-bottom: 8px;
       object-fit: contain;
     }
 
     .portal-title {
-      font-size: 24px;
-      font-weight: 700;
+      font-size: 20px;
       color: var(--title-brown);
-      margin: 0 0 8px 0;
+      margin: 0;
+      font-weight: 700;
     }
 
-    .portal-subtitle {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.4;
-      margin-bottom: 25px;
-    }
-
-    .card {
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
       background: var(--card-bg);
-      border-radius: 20px;
-      padding: 25px 20px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
-      text-align: left;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
     }
 
     .form-group {
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
-    .field-label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.8px;
-      color: var(--label-color);
-      text-transform: uppercase;
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--title-brown);
       margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    input, select, textarea {
+    input[type="text"], select, textarea, input[type="file"] {
       width: 100%;
-      padding: 14px 16px;
-      background-color: var(--input-bg);
-      border: none;
-      border-radius: 12px;
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      background-color: var(--card-bg);
       font-size: 14px;
       font-family: inherit;
-      color: #111111;
-      outline: none;
+      color: #1f2937;
+      transition: border-color 0.2s;
     }
 
     input:focus, select:focus, textarea:focus {
-      background-color: #e2e5e8;
+      outline: none;
+      border-color: var(--btn-brown);
     }
 
     textarea {
       resize: vertical;
-      min-height: 80px;
+      min-height: 90px;
     }
 
     .btn-submit {
       width: 100%;
       background-color: var(--btn-brown);
       color: #ffffff;
-      padding: 15px;
       border: none;
-      border-radius: 12px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 15px;
-      box-shadow: 0 6px 14px rgba(93, 61, 30, 0.2);
-    }
-
-    .btn-submit:hover { background-color: var(--btn-hover); }
-
-    .status-alert {
-      margin-top: 20px;
       padding: 14px;
-      border-radius: 12px;
-      font-size: 13px;
-      font-weight: 600;
-      text-align: center;
-      display: none;
-      line-height: 1.4;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.2s;
     }
 
-    .status-pending { background-color: #fffbeb; color: #b45309; border: 1px solid #fcd34d; }
-    .status-scheduled { background-color: #eff6ff; color: #1d4ed8; border: 1px solid #93c5fd; }
-    .status-resolved { background-color: #f0fdf4; color: #15803d; border: 1px solid #86efac; }
+    .btn-submit:hover {
+      background-color: var(--btn-hover);
+    }
+
+    .btn-submit:disabled {
+      background-color: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    /* Live Status Alerts */
+    .status-alert {
+      display: none;
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .status-pending {
+      background-color: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+    }
+
+    .status-scheduled {
+      background-color: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #93c5fd;
+    }
+
+    .status-resolved {
+      background-color: #dcfce7;
+      color: #15803d;
+      border: 1px solid #86efac;
+    }
+
+    .status-rejected {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
   </style>
 </head>
 <body>
 
-<div class="portal-wrapper">
-  <!-- REPLACE 'logo.png' WITH YOUR IMAGE URL OR FILE PATH -->
+<div class="header-area">
   <img src="logo.png" alt="Company Logo" class="brand-logo-img">
-  
-  <h1 class="portal-title">Technician Complaint Portal</h1>
-  <p class="portal-subtitle">Submit room maintenance, AC, or plumbing issues directly to the Maintenance team.</p>
+  <h1 class="portal-title">Technician Maintenance Request</h1>
+</div>
 
-  <div class="card">
-    <form id="complaintForm">
-      
-      <div class="form-group">
-        <label class="field-label">👤 Technician ID</label>
-        <input type="text" id="techId" placeholder="e.g. C62921" required>
-      </div>
+<div class="container">
+  <form id="complaintForm">
+    <div class="form-group">
+      <label for="techId">Technician ID / Name</label>
+      <input type="text" id="techId" placeholder="Enter your ID or Name" required>
+    </div>
 
-      <div class="form-group">
-        <label class="field-label">🏢 Floor Number</label>
-        <select id="floorNumber" required>
-          <option value="" disabled selected>Select Floor</option>
-          <option value="Floor 1">Floor 1</option>
-          <option value="Floor 2">Floor 2</option>
-          <option value="Floor 3">Floor 3</option>
-          <option value="Floor 4">Floor 4</option>
-          <option value="Floor 5">Floor 5</option>
-        </select>
-      </div>
+    <div class="form-group">
+      <label for="floorNumber">Floor Number</label>
+      <select id="floorNumber" required>
+        <option value="">Select Floor</option>
+        <option value="Basement">Basement</option>
+        <option value="Ground Floor">Ground Floor</option>
+        <option value="Floor 1">Floor 1</option>
+        <option value="Floor 2">Floor 2</option>
+        <option value="Floor 3">Floor 3</option>
+        <option value="Floor 4">Floor 4</option>
+        <option value="Floor 5">Floor 5</option>
+      </select>
+    </div>
 
-      <div class="form-group">
-        <label class="field-label">🚪 Room Number / Area</label>
-        <input type="text" id="roomNumber" placeholder="e.g. 102 or Restroom" required>
-      </div>
+    <div class="form-group">
+      <label for="roomNumber">Room Number / Area</label>
+      <input type="text" id="roomNumber" placeholder="e.g. Room 502 / Main Lobby" required>
+    </div>
 
-      <div class="form-group">
-        <label class="field-label">🛠️ Category</label>
-        <select id="category" required>
-          <option value="" disabled selected>Select Category</option>
-          <option value="AC Problem">AC Problem</option>
-          <option value="Water Supply">Water Supply</option>
-          <option value="Tap / Plumbing">Tap / Plumbing</option>
-          <option value="Toilet Issue">Toilet Issue</option>
-          <option value="Electrical">Electrical</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
+    <div class="form-group">
+      <label for="category">Issue Category</label>
+      <select id="category" required>
+        <option value="">Select Category</option>
+        <option value="Electrical">Electrical</option>
+        <option value="Plumbing">Plumbing</option>
+        <option value="HVAC / AC">HVAC / AC</option>
+        <option value="Carpentry">Carpentry</option>
+        <option value="Civil Work">Civil Work</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
 
-      <div class="form-group">
-        <label class="field-label">📷 Upload Photo</label>
-        <input type="file" id="photo" accept="image/*" style="padding: 10px;">
-      </div>
+    <div class="form-group">
+      <label for="description">Complaint Description</label>
+      <textarea id="description" placeholder="Describe the issue in detail..." required></textarea>
+    </div>
 
-      <div class="form-group">
-        <label class="field-label">📝 Complaint Description</label>
-        <textarea id="description" placeholder="Describe the issue in detail..." required></textarea>
-      </div>
+    <div class="form-group">
+      <label for="photo">Attach Photo (Optional)</label>
+      <input type="file" id="photo" accept="image/*">
+    </div>
 
-      <button type="submit" class="btn-submit" id="submitBtn">Submit Complaint</button>
+    <button type="submit" id="submitBtn" class="btn-submit">Submit Complaint</button>
+  </form>
 
-    </form>
-
-    <div id="statusBox" class="status-alert"></div>
-  </div>
+  <div id="statusBox" class="status-alert"></div>
 </div>
 
 <script>
-  // Ensure this exact URL ends in '/exec'
-  const API_URL = "https://script.google.com/macros/s/AKfycbyPPLCBiIByU426Qf_XCuTCfLAEXhKA3HTL-Sl31jQYbgNmCF75DObMR0dT6kCB5xz2/exec"; 
+  const API_URL = "https://script.google.com/macros/s/AKfycbwoTBPZFvUSGqS6VYmITjew4P2bkVxPdIJUD0e4Lt5FYslV9JUycSpLvMaM95W3MuF9/exec";
   let activeComplaintId = null;
+
+  // Compress photo before uploading to avoid server timeouts
+  function compressImage(file, maxWidth, quality, callback) {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = event => {
+      const img = new Image();
+      img.src = event.target.result;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        callback(canvas.toDataURL('image/jpeg', quality));
+      };
+    };
+  }
 
   document.getElementById('complaintForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
-    btn.innerText = "Submitting...";
+    btn.innerText = "Compressing & Submitting...";
 
     const file = document.getElementById('photo').files[0];
 
@@ -227,10 +262,8 @@
         mimeType: mimeType
       };
 
-      // Sending payload as text/plain avoids CORS preflight OPTIONS blocking on browsers
       fetch(API_URL, {
         method: 'POST',
-        mode: 'cors',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)
       })
@@ -240,7 +273,7 @@
           activeComplaintId = res.id;
           const statusBox = document.getElementById('statusBox');
           statusBox.className = 'status-alert status-pending';
-          statusBox.innerHTML = `Complaint <strong>${activeComplaintId}</strong> submitted.<br>Waiting for review.`;
+          statusBox.innerHTML = `Complaint <strong>${activeComplaintId}</strong> submitted successfully.<br>Status: <strong>Pending Review</strong>`;
           statusBox.style.display = 'block';
 
           document.getElementById('complaintForm').reset();
@@ -250,7 +283,7 @@
       })
       .catch((error) => {
         console.error("Fetch Error:", error);
-        alert("Submission failed. Check Console (F12) for network/CORS error.");
+        alert("Submission failed. Please check your internet connection.");
       })
       .finally(() => {
         btn.disabled = false;
@@ -259,14 +292,15 @@
     };
 
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (evt) => sendData(evt.target.result, file.name, file.type);
-      reader.readAsDataURL(file);
+      compressImage(file, 1024, 0.7, (compressedDataUrl) => {
+        sendData(compressedDataUrl, file.name, 'image/jpeg');
+      });
     } else {
       sendData();
     }
   });
 
+  // Polling to update technician on status changes
   setInterval(async () => {
     if (!activeComplaintId) return;
 
@@ -279,13 +313,18 @@
         const statusBox = document.getElementById('statusBox');
         if (item.status === 'Resolved') {
           statusBox.className = 'status-alert status-resolved';
-          statusBox.innerHTML = `Complaint (<strong>${activeComplaintId}</strong>) has been SOLVED!`;
-        } else if (item.scheduleDate) {
+          statusBox.innerHTML = `Complaint <strong>${activeComplaintId}</strong> has been <strong>RESOLVED</strong>!`;
+        } else if (item.status === 'Rescheduled') {
           statusBox.className = 'status-alert status-scheduled';
-          statusBox.innerHTML = `SCHEDULED ALERT: Complaint (<strong>${activeComplaintId}</strong>) is scheduled for <strong>${item.scheduleDate}</strong>.`;
+          statusBox.innerHTML = `Complaint <strong>${activeComplaintId}</strong> is <strong>RESCHEDULED</strong> for <strong>${item.scheduleDate}</strong>.<br>Reason: <i>${item.rescheduleReason || 'N/A'}</i>`;
+        } else if (item.status === 'Rejected') {
+          statusBox.className = 'status-alert status-rejected';
+          statusBox.innerHTML = `Complaint <strong>${activeComplaintId}</strong> was <strong>REJECTED</strong> by the maintenance team.`;
         }
       }
-    } catch (e) { console.error(e); }
+    } catch (e) { 
+      console.error(e); 
+    }
   }, 4000);
 </script>
 

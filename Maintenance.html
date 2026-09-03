@@ -307,12 +307,12 @@
     </table>
   </div>
 </div>
-
-  <script>
-  const API_URL = "https://script.google.com/macros/s/AKfycbwoTBPZFvUSGqS6VYmITjew4P2bkVxPdIJUD0e4Lt5FYslV9JUycSpLvMaM95W3MuF9/exec";
+  
+<script>
+  const API_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
   let dataset = [];
   let currentTab = 'Pending';
-  let isUserInteracting = false; // Prevents auto-refresh from clearing file selection
+  let isUserInteracting = false;
 
   function switchTab(tabName, evt) {
     currentTab = tabName;
@@ -322,7 +322,6 @@
   }
 
   async function loadComplaints() {
-    // Skip re-rendering if user is selecting a photo or typing
     if (isUserInteracting) return;
 
     try {
@@ -335,7 +334,7 @@
   }
 
   function renderTable() {
-    if (isUserInteracting) return; // Guard against overwriting selected files
+    if (isUserInteracting) return;
 
     const tbody = document.getElementById('tableBody');
     const thMeta = document.getElementById('thDynamicMeta');
@@ -365,7 +364,7 @@
         thMeta.innerText = "Rescheduled Info";
         thAction.innerText = "Status";
       } else if (currentTab === 'Resolved') {
-        thMeta.innerText = "Resolution Photo";
+        thMeta.innerText = "Resolution Info";
         thAction.innerText = "Status";
       } else {
         thMeta.innerText = "Details";
@@ -410,8 +409,13 @@
         actionColumnHtml = `<span style="color:#1d4ed8; font-weight:600;">Rescheduled</span>`;
       } else if (currentTab === 'Resolved') {
         const resPhoto = c.resolutionPhotoUrl && c.resolutionPhotoUrl.startsWith('http')
-          ? `<a href="${c.resolutionPhotoUrl}" target="_blank" class="photo-link">View Resolution Photo</a>` : 'None';
-        metaColumnHtml = resPhoto;
+          ? `<a href="${c.resolutionPhotoUrl}" target="_blank" class="photo-link">View Photo</a>` : 'None';
+        metaColumnHtml = `
+          <div style="text-align:right;">
+            <strong>Photo:</strong> ${resPhoto}<br>
+            <span style="font-size:11px; color:#15803d;"><strong>Resolved On:</strong> ${c.resolvedDate || 'N/A'}</span>
+          </div>
+        `;
         actionColumnHtml = `<span style="color:green; font-weight:600;">Completed</span>`;
       } else {
         metaColumnHtml = `<span>Rejected by team</span>`;
@@ -465,7 +469,6 @@
     btn.innerText = "Uploading & Resolving...";
     isUserInteracting = true;
 
-    // Helper to compress resolution photo before upload
     const reader = new FileReader();
     reader.onload = function(evt) {
       const img = new Image();

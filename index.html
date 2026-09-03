@@ -167,7 +167,6 @@
       <label for="floorNumber">🏢 Floor Number</label>
       <select id="floorNumber" required>
         <option value="">Select Floor</option>
-        <option value="Basement">Basement</option>
         <option value="Ground Floor">Ground Floor</option>
         <option value="Floor 1">Floor 1</option>
         <option value="Floor 2">Floor 2</option>
@@ -188,9 +187,9 @@
         <option value="">Select Category</option>
         <option value="Electrical">Electrical</option>
         <option value="Plumbing">Plumbing</option>
-        <option value="AC Problem">HVAC / AC</option>
-        <option value="Toilet Issue">Carpentry</option>
-        <option value="Water Leakage">Civil Work</option>
+        <option value="AC Problem">Ac Problem</option>
+        <option value="Toilet Issue">Toilet Issue</option>
+        <option value="Water Leakage">Water Leakage</option>
         <option value="Other">Other</option>
       </select>
     </div>
@@ -274,7 +273,7 @@
           activeComplaintId = res.id;
           const statusBox = document.getElementById('statusBox');
           statusBox.className = 'status-alert status-pending';
-          statusBox.innerHTML = `Your Complaint <strong>${activeComplaintId}</strong> submitted successfully.<br>Status: <strong>Maintenance Team Will Respond Soon</strong>`;
+          statusBox.innerHTML = `Your Complaint <strong>${activeComplaintId}</strong> submitted successfully.<br>Status: Pending <strong>Maintenance Team Will Respond Soon</strong>`;
           statusBox.style.display = 'block';
 
           document.getElementById('complaintForm').reset();

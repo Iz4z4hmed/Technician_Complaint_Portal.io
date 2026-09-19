@@ -3,67 +3,80 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Technician Complaint Portal</title>
-  <Link rel="icon" typle="image" href="icon.jpeg">
+  <title>Technician Service Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
     :root {
-      --title-brown: #3d2a1d;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
       --btn-brown: #5d3d1e;
       --btn-hover: #452c13;
-      --bg-color: #f7f7f8;
-      --card-bg: #ffffff;
-      --input-bg: #eef0f2;
-      --border-color: #d1d5db;
+      --input-bg: #f8fafc;
+      --border-color: #e2e8f0;
+      --focus-ring: rgba(93, 61, 30, 0.2);
     }
 
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Inter', sans-serif;
       background-color: var(--bg-color);
-      margin: 0;
-      padding: 16px 10px;
+      color: var(--text-main);
+      padding: 24px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
     }
 
-    .header-area {
-      text-align: center;
-      margin-bottom: 20px;
+    .wrapper { width: 100%; max-width: 520px; }
+
+    .top-bar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 12px;
     }
+
+    .lang-select {
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: var(--card-bg);
+      font-weight: 600;
+      color: var(--btn-brown);
+      cursor: pointer;
+    }
+
+    .brand-header { text-align: center; margin-bottom: 20px; }
 
     .brand-logo-img {
-      max-width: 150px;
+      max-width: 140px;
       height: auto;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       object-fit: contain;
     }
 
-    .portal-title {
-      font-size: 20px;
-      color: var(--title-brown);
-      margin: 0;
-      font-weight: 700;
-    }
+    .portal-title { font-size: 22px; font-weight: 700; color: var(--text-main); }
+    .portal-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
 
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
+    .card {
       background: var(--card-bg);
       border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      padding: 28px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
     }
 
-    .form-group {
-      margin-bottom: 16px;
-    }
+    .form-group { margin-bottom: 18px; }
+    .form-row { display: flex; gap: 12px; }
+    .form-row .form-group { flex: 1; }
 
     label {
       display: block;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
-      color: var(--title-brown);
+      color: var(--text-main);
       margin-bottom: 6px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -71,25 +84,24 @@
 
     input[type="text"], select, textarea, input[type="file"] {
       width: 100%;
-      padding: 12px;
+      padding: 12px 14px;
       border: 1px solid var(--border-color);
       border-radius: 10px;
-      background-color: var(--card-bg);
+      background-color: var(--input-bg);
       font-size: 14px;
       font-family: inherit;
-      color: #1f2937;
-      transition: border-color 0.2s;
+      color: var(--text-main);
+      transition: all 0.2s ease;
     }
 
     input:focus, select:focus, textarea:focus {
       outline: none;
+      background-color: #ffffff;
       border-color: var(--btn-brown);
+      box-shadow: 0 0 0 3px var(--focus-ring);
     }
 
-    textarea {
-      resize: vertical;
-      min-height: 90px;
-    }
+    textarea { resize: vertical; min-height: 95px; }
 
     .btn-submit {
       width: 100%;
@@ -99,21 +111,15 @@
       padding: 14px;
       border-radius: 10px;
       font-size: 15px;
-      font-weight: 700;
+      font-weight: 600;
       cursor: pointer;
-      transition: background-color 0.2s;
+      transition: background-color 0.2s ease;
+      margin-top: 8px;
     }
 
-    .btn-submit:hover {
-      background-color: var(--btn-hover);
-    }
+    .btn-submit:hover { background-color: var(--btn-hover); }
+    .btn-submit:disabled { background-color: #94a3b8; cursor: not-allowed; }
 
-    .btn-submit:disabled {
-      background-color: #9ca3af;
-      cursor: not-allowed;
-    }
-
-    /* Live Status Alerts */
     .status-alert {
       display: none;
       margin-top: 20px;
@@ -124,97 +130,173 @@
       text-align: center;
     }
 
-    .status-pending {
-      background-color: #fef3c7;
-      color: #92400e;
-      border: 1px solid #fcd34d;
-    }
-
-    .status-scheduled {
-      background-color: #eff6ff;
-      color: #1d4ed8;
-      border: 1px solid #93c5fd;
-    }
-
-    .status-resolved {
-      background-color: #dcfce7;
-      color: #15803d;
-      border: 1px solid #86efac;
-    }
-
-    .status-rejected {
-      background-color: #fee2e2;
-      color: #991b1b;
-      border: 1px solid #fca5a5;
-    }
+    .status-pending { background-color: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+    .status-scheduled { background-color: #eff6ff; color: #1d4ed8; border: 1px solid #93c5fd; }
+    .status-resolved { background-color: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+    .status-rejected { background-color: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
   </style>
 </head>
 <body>
 
-<div class="header-area">
-  <img src="logo.png" alt="Company Logo" class="brand-logo-img">
-  <h1 class="portal-title">Technician Maintenance Request</h1>
-</div>
+<div class="wrapper">
+  <div class="top-bar"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-languages absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" aria-hidden="true"><path d="m5 8 6 6"></path><path d="m4 14 6-6 2-3"></path><path d="M2 5h12"></path><path d="M7 2h1"></path><path d="m22 22-5-10-5 10"></path><path d="M14 18h6"></path></svg> 
+    <select id="langSelect" class="lang-select" onchange="changeLanguage(this.value)">
+      <option value="en">English</option>
+      <option value="hi">हिंदी (Hindi)</option>
+      <option value="ta">தமிழ் (Tamil)</option>
+      <option value="ml">മലയാളം (Malayalam)</option>
+    </select>
+  </div>
 
-<div class="container">
-  <form id="complaintForm">
-    <div class="form-group">
-      <label for="techId">👤 Technician ID / Name</label>
-      <input type="text" id="techId" placeholder="Enter your ID or Name" >
-    </div>
+  <div class="brand-header">
+    <img src="logo.png" alt="Company Logo" class="brand-logo-img">
+    <h1 class="portal-title" id="t-title">Submit Maintenance Issue</h1>
+    <p class="portal-subtitle" id="t-subtitle">Quickly report workplace or facility issues</p>
+  </div>
 
-    <div class="form-group">
-      <label for="floorNumber">🏢 Floor Number</label>
-      <select id="floorNumber" required>
-        <option value="">Select Floor</option>
-        <option value="Ground Floor">Ground Floor</option>
-        <option value="Floor 1">Floor 1</option>
-        <option value="Floor 2">Floor 2</option>
-        <option value="Floor 3">Floor 3</option>
-        <option value="Floor 4">Floor 4</option>
-        <option value="Floor 5">Floor 5</option>
-      </select>
-    </div>
+  <div class="card">
+    <form id="complaintForm">
+      <div class="form-group">
+        <label for="techId" id="t-label-tech">👤 Technician ID / Name</label>
+        <input type="text" id="techId" placeholder="C123456 or Name">
+      </div>
 
-    <div class="form-group">
-      <label for="roomNumber">🚪 Room Number / Area</label>
-      <input type="text" id="roomNumber" placeholder="e.g. Room 502 / Main Lobby" required>
-    </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="floorNumber" id="t-label-floor">🏢 Floor <span style="color: red;">⁕</span></label>
+          <select id="floorNumber" required>
+            <option value="" id="opt-floor-select">Select</option>
+            <option value="Ground Floor">Ground</option>
+            <option value="Floor 1">Floor 1</option>
+            <option value="Floor 2">Floor 2</option>
+            <option value="Floor 3">Floor 3</option>
+            <option value="Floor 4">Floor 4</option>
+            <option value="Floor 5">Floor 5</option>
+          </select>
+        </div>
 
-    <div class="form-group">
-      <label for="category">🛠️ Category</label>
-      <select id="category" required>
-        <option value="">Select Category</option>
-        <option value="Electrical">Electrical</option>
-        <option value="Plumbing">Plumbing</option>
-        <option value="AC Problem">Ac Problem</option>
-        <option value="Toilet Issue">Toilet Issue</option>
-        <option value="Water Leakage">Water Leakage</option>
-        <option value="Other">Other</option>
-      </select>
-    </div>
+        <div class="form-group">
+          
+<label for="roomNumber" id="t-label-room">🚪 Room / Location <span style="color: red;">⁕</span></label>
+        <input type="text" id="roomNumber" placeholder="e.g. Room 204" required>
+        </div>
+      </div>
 
-    <div class="form-group">
-      <label for="description">📝 Complaint Description</label>
-      <textarea id="description" placeholder="Describe the issue in detail..." required></textarea>
-    </div>
+      <div class="form-group">
+         <label for="category" id="t-label-cat">🛠️ Category <span style="color: red;">⁕</span></label>
+          <select id="category" required>
+            <option value="" id="opt-cat-select">Select</option>
+            <option value="Electrical" id="opt-elec">Electrical</option>
+            <option value="Plumbing" id="opt-plumb">Plumbing</option>
+            <option value="HVAC / AC" id="opt-hvac">HVAC / AC</option>
+            <option value="Carpentry" id="opt-carp">Carpentry</option>
+            <option value="Civil Work" id="opt-civil">Civil Work</option>
+            <option value="Other" id="opt-other">Other</option>
+          </select>
+      </div>
 
-    <div class="form-group">
-      <label for="photo">📷 Attach Photo (Optional)</label>
-      <input type="file" id="photo" accept="image/*">
-    </div>
+      <div class="form-group">
+        <label for="description" id="t-label-desc">📝 Issue Details <span style="color: red;">⁕</span></label>
+        <textarea id="description" placeholder="Describe what needs repair..." required></textarea>
+      </div>
 
-    <button type="submit" id="submitBtn" class="btn-submit">Submit Complaint</button>
-  </form>
+      <div class="form-group">
+        <label for="photo" id="t-label-photo">📷 Attach Photo (Optional)</label>
+        <input type="file" id="photo" accept="image/*">
+      </div>
 
-  <div id="statusBox" class="status-alert"></div>
+      <button type="submit" id="submitBtn" class="btn-submit">Submit Request</button>
+    </form>
+
+    <div id="statusBox" class="status-alert"></div>
+  </div>
 </div>
 
 <script>
-  const API_URL = "https://script.google.com/macros/s/AKfycbwbr9hXIeie1ELiF_-SlLQCQRxykAy4CFEG1EU_Pc4fnE3TUnFtKLoG8FliMyc8Uh8I/exec";
+  const API_URL = "https://script.google.com/macros/s/AKfycbzFO93a-1UcP-xCvBKnCeV0fKG5GnaGxaOIxh2yQjxFWqA2FYaX0JjKU8xpiEWpnRMv/exec";
   let activeComplaintId = null;
 
-  // Compress photo before uploading to avoid server timeouts
+  const translations = {
+    en: {
+      title: "Submit Maintenance Issue",
+      subtitle: "Quickly report workplace or facility issues",
+      tech: "Technician ID / Name",
+      floor: "Floor",
+      cat: "Category",
+      room: "Room / Location",
+      desc: "Issue Details",
+      photo: "Attach Photo (Optional)",
+      submit: "Submit Request",
+      submitting: "Submitting Request...",
+      sel: "Select",
+      elec: "Electrical", plumb: "Plumbing", hvac: "HVAC / AC", carp: "Carpentry", civil: "Civil Work", other: "Other"
+    },
+    hi: {
+      title: "शिकायत दर्ज करें",
+      subtitle: "कार्यस्थल की समस्याओं की रिपोर्ट करें",
+      tech: "तकनीशियन आईडी / नाम",
+      floor: "मंजिल (Floor)",
+      cat: "श्रेणी (Category)",
+      room: "कमरा / स्थान",
+      desc: "समस्या का विवरण",
+      photo: "फोटो संलग्न करें (वैकल्पिक)",
+      submit: "शिकायत भेजें",
+      submitting: "भेजा जा रहा है...",
+      sel: "चुनें",
+      elec: "बिजली (Electrical)", plumb: "प्लंबिंग", hvac: "एसी (AC/HVAC)", carp: "बढ़ईगीरी", civil: "सिविल काम", other: "अन्य"
+    },
+    ta: {
+      title: "பராமரிப்பு புகாரை பதிவு செய்க",
+      subtitle: "பணிவிடப் புகார்களை உடனடியாகப் புகாரளிக்கவும்",
+      tech: "தொழில்நுட்ப வல்லுநர் ஐடி / பெயர்",
+      floor: "தளம் (Floor)",
+      cat: "வகை (Category)",
+      room: "அறை / இடம்",
+      desc: "பிரச்சனை விவரங்கள்",
+      photo: "புகைப்படம் இணைக்கவும் (விருப்பம்)",
+      submit: "சமர்ப்பிக்கவும்",
+      submitting: "சமர்ப்பிக்கப்படுகிறது...",
+      sel: "தேர்ந்தெடு",
+      elec: "மின்சாரம்", plumb: "பிளம்பிங்", hvac: "ஏசி (AC)", carp: "மரவேலை", civil: "சிவில் வேலை", other: "மற்றவை"
+    },
+    ml: {
+      title: "പരാതി രജിസ്റ്റർ ചെയ്യുക",
+      subtitle: "തൊഴിൽ സ്ഥലത്തെ പ്രശ്നങ്ങൾ അറിയിക്കുക",
+      tech: "ടെക്നീഷ്യൻ ഐഡി / പേര്",
+      floor: "നില (Floor)",
+      cat: "വിഭാഗം (Category)",
+      room: "മുറി / സ്ഥലം",
+      desc: "പ്രശ്ന വിവരണം",
+      photo: "ഫോട്ടോ ചേർക്കുക (ഐച്ഛികം)",
+      submit: "സമർപ്പിക്കുക",
+      submitting: "സമർപ്പിക്കുന്നു...",
+      sel: "തിരഞ്ഞെടുക്കുക",
+      elec: "ഇലക്ട്രിക്കൽ", plumb: "പ്ലംബിംഗ്", hvac: "എസി (AC)", carp: "കാർപെന്ററി", civil: "സിവിൽ വർക്ക്", other: "മറ്റുള്ളവ"
+    }
+  };
+
+  function changeLanguage(lang) {
+    const t = translations[lang] || translations.en;
+    document.getElementById('t-title').innerText = t.title;
+    document.getElementById('t-subtitle').innerText = t.subtitle;
+    document.getElementById('t-label-tech').innerText = t.tech;
+    document.getElementById('t-label-floor').innerText = t.floor;
+    document.getElementById('t-label-cat').innerText = t.cat;
+    document.getElementById('t-label-room').innerText = t.room;
+    document.getElementById('t-label-desc').innerText = t.desc;
+    document.getElementById('t-label-photo').innerText = t.photo;
+    document.getElementById('submitBtn').innerText = t.submit;
+    
+    document.getElementById('opt-floor-select').innerText = t.sel;
+    document.getElementById('opt-cat-select').innerText = t.sel;
+    document.getElementById('opt-elec').innerText = t.elec;
+    document.getElementById('opt-plumb').innerText = t.plumb;
+    document.getElementById('opt-hvac').innerText = t.hvac;
+    document.getElementById('opt-carp').innerText = t.carp;
+    document.getElementById('opt-civil').innerText = t.civil;
+    document.getElementById('opt-other').innerText = t.other;
+  }
+
   function compressImage(file, maxWidth, quality, callback) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -243,9 +325,10 @@
 
   document.getElementById('complaintForm').addEventListener('submit', function(e) {
     e.preventDefault();
+    const lang = document.getElementById('langSelect').value;
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
-    btn.innerText = "Compressing & Submitting...";
+    btn.innerText = translations[lang].submitting;
 
     const file = document.getElementById('photo').files[0];
 
@@ -273,21 +356,21 @@
           activeComplaintId = res.id;
           const statusBox = document.getElementById('statusBox');
           statusBox.className = 'status-alert status-pending';
-          statusBox.innerHTML = `Your Complaint <strong>${activeComplaintId}</strong> submitted successfully.<br>Status: Pending <strong>Maintenance Team Will Respond Soon</strong>`;
+          statusBox.innerHTML = `Ticket <strong>${activeComplaintId}</strong> logged successfully.<br>Status: <strong>Pending Review</strong>`;
           statusBox.style.display = 'block';
 
           document.getElementById('complaintForm').reset();
         } else {
-          alert("Script Error: " + (res.message || "Unknown error"));
+          alert("Error: " + (res.message || "Unable to save request"));
         }
       })
       .catch((error) => {
         console.error("Fetch Error:", error);
-        alert("Submission failed. Please check your internet connection.");
+        alert("Submission failed. Please check connection.");
       })
       .finally(() => {
         btn.disabled = false;
-        btn.innerText = 'Submit Complaint';
+        btn.innerText = translations[lang].submit;
       });
     };
 
@@ -300,7 +383,6 @@
     }
   });
 
-  // Polling to update technician on status changes
   setInterval(async () => {
     if (!activeComplaintId) return;
 
@@ -313,18 +395,16 @@
         const statusBox = document.getElementById('statusBox');
         if (item.status === 'Resolved') {
           statusBox.className = 'status-alert status-resolved';
-          statusBox.innerHTML = `Complaint <strong>${activeComplaintId}</strong> has been <strong>RESOLVED</strong>!`;
+          statusBox.innerHTML = `Ticket <strong>${activeComplaintId}</strong> is <strong>RESOLVED</strong>!`;
         } else if (item.status === 'Rescheduled') {
           statusBox.className = 'status-alert status-scheduled';
-          statusBox.innerHTML = `Complaint <strong>${activeComplaintId}</strong> is <strong>RESCHEDULED</strong> for <strong>${item.scheduleDate}</strong>.<br>Reason: <i>${item.rescheduleReason || 'N/A'}</i>`;
+          statusBox.innerHTML = `Ticket <strong>${activeComplaintId}</strong> is <strong>RESCHEDULED</strong> for <strong>${item.scheduleDate}</strong>.<br>Reason: <i>${item.rescheduleReason || 'N/A'}</i>`;
         } else if (item.status === 'Rejected') {
           statusBox.className = 'status-alert status-rejected';
-          statusBox.innerHTML = `Complaint <strong>${activeComplaintId}</strong> was <strong>REJECTED</strong> by the maintenance team.`;
+          statusBox.innerHTML = `Ticket <strong>${activeComplaintId}</strong> was <strong>REJECTED</strong>.`;
         }
       }
-    } catch (e) { 
-      console.error(e); 
-    }
+    } catch (e) { console.error(e); }
   }, 4000);
 </script>
 

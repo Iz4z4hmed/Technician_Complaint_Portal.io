@@ -24,51 +24,78 @@
       font-family: 'Inter', sans-serif;
       background-color: var(--bg-color);
       color: var(--text-main);
-      padding: 24px 16px;
+      padding: 20px 16px;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
     }
 
-    .wrapper { width: 100%; max-width: 520px; }
+    .wrapper { width: 100%; max-width: 520px; position: relative; }
 
+    /* Compact Globe Icon Language Picker */
     .top-bar {
       display: flex;
       justify-content: flex-end;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
+      position: relative;
     }
 
-    .lang-select {
-      padding: 6px 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
+    .lang-icon-btn {
       background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--btn-brown);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+    }
+
+    .lang-dropdown {
+      display: none;
+      position: absolute;
+      top: 36px;
+      right: 0;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      z-index: 100;
+      overflow: hidden;
+      min-width: 140px;
+    }
+
+    .lang-dropdown option {
+      padding: 10px 14px;
+      font-size: 13px;
       cursor: pointer;
     }
 
     .brand-header { text-align: center; margin-bottom: 20px; }
 
     .brand-logo-img {
-      max-width: 140px;
+      max-width: 130px;
       height: auto;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       object-fit: contain;
     }
 
-    .portal-title { font-size: 22px; font-weight: 700; color: var(--text-main); }
+    .portal-title { font-size: 20px; font-weight: 700; color: var(--text-main); }
     .portal-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
 
     .card {
       background: var(--card-bg);
       border-radius: 16px;
-      padding: 28px;
+      padding: 24px;
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
     }
 
-    .form-group { margin-bottom: 18px; }
+    .form-group { margin-bottom: 16px; }
     .form-row { display: flex; gap: 12px; }
     .form-row .form-group { flex: 1; }
 
@@ -101,7 +128,7 @@
       box-shadow: 0 0 0 3px var(--focus-ring);
     }
 
-    textarea { resize: vertical; min-height: 95px; }
+    textarea { resize: vertical; min-height: 90px; }
 
     .btn-submit {
       width: 100%;
@@ -114,7 +141,7 @@
       font-weight: 600;
       cursor: pointer;
       transition: background-color 0.2s ease;
-      margin-top: 8px;
+      margin-top: 6px;
     }
 
     .btn-submit:hover { background-color: var(--btn-hover); }
@@ -139,32 +166,38 @@
 <body>
 
 <div class="wrapper">
-  <div class="top-bar"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-languages absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" aria-hidden="true"><path d="m5 8 6 6"></path><path d="m4 14 6-6 2-3"></path><path d="M2 5h12"></path><path d="M7 2h1"></path><path d="m22 22-5-10-5 10"></path><path d="M14 18h6"></path></svg> 
-    <select id="langSelect" class="lang-select" onchange="changeLanguage(this.value)">
-      <option value="en">English</option>
-      <option value="hi">हिंदी (Hindi)</option>
-      <option value="ta">தமிழ் (Tamil)</option>
-      <option value="ml">മലയാളം (Malayalam)</option>
-    </select>
+  <!-- Globe Icon Bar -->
+  <div class="top-bar">
+    <div style="position:relative;">
+      <button class="lang-icon-btn" onclick="toggleLangMenu()">
+        🌐 <span id="currentLangLabel">EN</span> ▾
+      </button>
+      <select id="langSelect" class="lang-dropdown" size="4" onchange="selectLanguage(this.value)">
+        <option value="en" selected>English</option>
+        <option value="hi">हिंदी (Hindi)</option>
+        <option value="ta">தமிழ் (Tamil)</option>
+        <option value="ml">മലയാളം (Malayalam)</option>
+      </select>
+    </div>
   </div>
 
   <div class="brand-header">
     <img src="logo.png" alt="Company Logo" class="brand-logo-img">
     <h1 class="portal-title" id="t-title">Submit Maintenance Issue</h1>
-    <!-- <p class="portal-subtitle" id="t-subtitle">Quickly report workplace or facility issues</p> -->
-        <h4 class="portal-subtitle" id="t-subtitle">Jebel Ali TR-03</h4>
+    
+  <h3 class="portal-subtitle" id="t-subtitle">Jebel Ali TR-03</h3>
   </div>
 
   <div class="card">
     <form id="complaintForm">
       <div class="form-group">
-        <label for="techId" id="t-label-tech">👤 Technician ID / Name</label>
-        <input type="text" id="techId" placeholder="C123456 or Name">
+        <label for="techId" id="t-label-tech">👤Technician ID / Name</label>
+        <input type="text" id="techId" placeholder="C12345/ABC" >
       </div>
 
       <div class="form-row">
         <div class="form-group">
-          <label for="floorNumber" id="t-label-floor">🏢 Floor <span style="color: red;">*</span></label>
+          <label for="floorNumber" id="t-label-floor">🏢Floor <span style="color: red;">*</span></label>
           <select id="floorNumber" required>
             <option value="" id="opt-floor-select">Select</option>
             <option value="Ground Floor">Ground</option>
@@ -177,14 +210,13 @@
         </div>
 
         <div class="form-group">
-          
-<label for="roomNumber" id="t-label-room">🚪 Room /Area <span style="color: red;">*</span></label>
+        <label for="roomNumber" id="t-label-room">🚪Room / Area <span style="color: red;">*</span></label>
         <input type="text" id="roomNumber" placeholder="e.g. Room 204" required>
         </div>
       </div>
 
       <div class="form-group">
-         <label for="category" id="t-label-cat">🛠️ Category <span style="color: red;">*</span></label>
+        <label for="category" id="t-label-cat">🛠️Category <span style="color: red;">*</span></label>
           <select id="category" required>
             <option value="" id="opt-cat-select">Select</option>
             <option value="Electrical" id="opt-elec">Electrical Issue</option>
@@ -197,12 +229,12 @@
       </div>
 
       <div class="form-group">
-        <label for="description" id="t-label-desc">📝 Complaint Description <span style="color: red;">*</span></label>
+        <label for="description" id="t-label-desc">📝Complaint Description</label>
         <textarea id="description" placeholder="Describe what needs repair..." required></textarea>
       </div>
 
       <div class="form-group">
-        <label for="photo" id="t-label-photo">📷 Attach Photo</label>
+        <label for="photo" id="t-label-photo">📷Attach Photo</label>
         <input type="file" id="photo" accept="image/*">
       </div>
 
@@ -214,11 +246,12 @@
 </div>
 
 <script>
-  const API_URL = "https://script.google.com/macros/s/AKfycbzFO93a-1UcP-xCvBKnCeV0fKG5GnaGxaOIxh2yQjxFWqA2FYaX0JjKU8xpiEWpnRMv/exec";
+  const API_URL = "https://script.google.com/macros/s/AKfycbyyTa1qfw_uDU3TnVg6KchVuH_3B1FjKMXsQVAcCY49zKGq32OLqadSGR9wcY39QGZj/exec";
   let activeComplaintId = null;
 
   const translations = {
     en: {
+      lbl: "EN",
       title: "Submit Maintenance Issue",
       subtitle: "Quickly report workplace or facility issues",
       tech: "Technician ID / Name",
@@ -233,6 +266,7 @@
       elec: "Electrical", plumb: "Plumbing", hvac: "HVAC / AC", carp: "Carpentry", civil: "Civil Work", other: "Other"
     },
     hi: {
+      lbl: "HI",
       title: "शिकायत दर्ज करें",
       subtitle: "कार्यस्थल की समस्याओं की रिपोर्ट करें",
       tech: "तकनीशियन आईडी / नाम",
@@ -247,6 +281,7 @@
       elec: "बिजली (Electrical)", plumb: "प्लंबिंग", hvac: "एसी (AC/HVAC)", carp: "बढ़ईगीरी", civil: "सिविल काम", other: "अन्य"
     },
     ta: {
+      lbl: "TA",
       title: "பராமரிப்பு புகாரை பதிவு செய்க",
       subtitle: "பணிவிடப் புகார்களை உடனடியாகப் புகாரளிக்கவும்",
       tech: "தொழில்நுட்ப வல்லுநர் ஐடி / பெயர்",
@@ -261,6 +296,7 @@
       elec: "மின்சாரம்", plumb: "பிளம்பிங்", hvac: "ஏசி (AC)", carp: "மரவேலை", civil: "சிவில் வேலை", other: "மற்றவை"
     },
     ml: {
+      lbl: "ML",
       title: "പരാതി രജിസ്റ്റർ ചെയ്യുക",
       subtitle: "തൊഴിൽ സ്ഥലത്തെ പ്രശ്നങ്ങൾ അറിയിക്കുക",
       tech: "ടെക്നീഷ്യൻ ഐഡി / പേര്",
@@ -276,8 +312,15 @@
     }
   };
 
-  function changeLanguage(lang) {
+  function toggleLangMenu() {
+    const dropdown = document.getElementById('langSelect');
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function selectLanguage(lang) {
+    document.getElementById('langSelect').style.display = 'none';
     const t = translations[lang] || translations.en;
+    document.getElementById('currentLangLabel').innerText = t.lbl;
     document.getElementById('t-title').innerText = t.title;
     document.getElementById('t-subtitle').innerText = t.subtitle;
     document.getElementById('t-label-tech').innerText = t.tech;

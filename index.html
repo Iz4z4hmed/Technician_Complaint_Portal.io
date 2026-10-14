@@ -152,6 +152,7 @@
     <img src="logo.png" alt="Company Logo" class="brand-logo-img">
     <h1 class="portal-title" id="t-title">Submit Maintenance Issue</h1>
     <p class="portal-subtitle" id="t-subtitle">Quickly report workplace or facility issues</p>
+        <h2 class="portal-title" id="t-title">Jebel Ali TR-03</h2>
   </div>
 
   <div class="card">
@@ -163,7 +164,7 @@
 
       <div class="form-row">
         <div class="form-group">
-          <label for="floorNumber" id="t-label-floor">🏢 Floor <span style="color: red;">⁕</span></label>
+          <label for="floorNumber" id="t-label-floor">🏢 Floor <span style="color: red;">*</span></label>
           <select id="floorNumber" required>
             <option value="" id="opt-floor-select">Select</option>
             <option value="Ground Floor">Ground</option>
@@ -171,19 +172,19 @@
             <option value="Floor 2">Floor 2</option>
             <option value="Floor 3">Floor 3</option>
             <option value="Floor 4">Floor 4</option>
-            <option value="Floor 5">Floor 5</option>
+            <option value="Floor 5">Roof Top</option>
           </select>
         </div>
 
         <div class="form-group">
           
-<label for="roomNumber" id="t-label-room">🚪 Room /Area <span style="color: red;">⁕</span></label>
+<label for="roomNumber" id="t-label-room">🚪 Room /Area <span style="color: red;">*</span></label>
         <input type="text" id="roomNumber" placeholder="e.g. Room 204" required>
         </div>
       </div>
 
       <div class="form-group">
-         <label for="category" id="t-label-cat">🛠️ Category <span style="color: red;">⁕</span></label>
+         <label for="category" id="t-label-cat">🛠️ Category <span style="color: red;">*</span></label>
           <select id="category" required>
             <option value="" id="opt-cat-select">Select</option>
             <option value="Electrical" id="opt-elec">Electrical Issue</option>
@@ -196,7 +197,7 @@
       </div>
 
       <div class="form-group">
-        <label for="description" id="t-label-desc">📝 Issue Details <span style="color: red;">⁕</span></label>
+        <label for="description" id="t-label-desc">📝 Complaint Description <span style="color: red;">*</span></label>
         <textarea id="description" placeholder="Describe what needs repair..." required></textarea>
       </div>
 
